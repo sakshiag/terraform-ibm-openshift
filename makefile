@@ -50,9 +50,6 @@ openshift:
 	ssh -o StrictHostKeyChecking=no  -A root@$$(terraform output bastion_public_ip) "bash -s -- $$(terraform output infra_private_ip) update_nodes.sh" < scripts/remote_exe.sh
 	ssh -o StrictHostKeyChecking=no -A root@$$(terraform output bastion_public_ip) "bash -s -- $$(terraform output app_private_ip) update_nodes.sh" < scripts/remote_exe.sh
 
-	#Update master
-	ssh -o StrictHostKeyChecking=no  -A root@$$(terraform output bastion_public_ip) "bash -s -- $$(terraform output master_private_ip) update_master.sh" < scripts/remote_exe.sh
-
 	# Update bastion node	
 	cat ./scripts/prepare_bastion.sh | ssh -o StrictHostKeyChecking=no -A root@$$(terraform output bastion_public_ip)
 	ssh -o StrictHostKeyChecking=no -A root@$$(terraform output bastion_public_ip) 'mkdir -p /root/.config/openshift/'

@@ -21,6 +21,7 @@ resource "local_file" "ose_config_file" {
   filename = "${path.cwd}/templates/installer.cfg.yml"
 }
 
+
 # Render the ose.repo file to use bastion public I
 data "template_file" "ose_repo_config" {
   template = "${file("${path.cwd}/templates/ose.repo.tpl")}"

@@ -70,9 +70,9 @@ docker save -o ose3-logging-metrics-images.tar \
     registry.access.redhat.com/openshift3/metrics-deployer \
     registry.access.redhat.com/openshift3/metrics-hawkular-metrics \
     registry.access.redhat.com/openshift3/metrics-cassandra \
-    registry.access.redhat.com/openshift3/metrics-heapster
+    registry.access.redhat.com/openshift3/metrics-heapster'
 
-#Configure httpd server
+# Configure httpd server
 
 chmod -R +r /var/www/html/repos
 restorecon -vR /var/www/html

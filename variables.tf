@@ -33,5 +33,4 @@ variable "private_router" {
 
 variable "ibm_sl_username"{}
 
-
 variable "ibm_sl_api_key"{}
