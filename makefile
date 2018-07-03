@@ -50,14 +50,20 @@ openshift:
 	ssh -o StrictHostKeyChecking=no  -A root@$$(terraform output bastion_public_ip) "bash -s -- $$(terraform output infra_private_ip) update_nodes.sh" < scripts/remote_exe.sh
 	ssh -o StrictHostKeyChecking=no -A root@$$(terraform output bastion_public_ip) "bash -s -- $$(terraform output app_private_ip) update_nodes.sh" < scripts/remote_exe.sh
 
+	#Update master
+	ssh -o StrictHostKeyChecking=no  -A root@$$(terraform output bastion_public_ip) "bash -s -- $$(terraform output master_private_ip) update_master.sh" < scripts/remote_exe.sh
+
 	# Update bastion node	
 	cat ./scripts/prepare_bastion.sh | ssh -o StrictHostKeyChecking=no -A root@$$(terraform output bastion_public_ip)
-	ssh -o StrictHostKeyChecking=no -A root@$$(terraform output bastion_public_ip) 'mkdir -p /root/.config/openshift/'
 	
 	# Install openshift
-	scp ./templates/installer.cfg.yml root@$$(terraform output bastion_public_ip):/root/.config/openshift/
-	ssh root@$$(terraform output bastion_public_ip) 'atomic-openshift-installer -u -c /root/.config/openshift/installer.cfg.yml install'
-
+	
+	scp ./templates/inventory.cfg root@$$(terraform output bastion_public_ip):/root/
+	ssh root@$$(terraform output bastion_public_ip) 'ansible-playbook -i /root/inventory.cfg /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml'
+	ssh root@$$(terraform output bastion_public_ip) 'ansible-playbook -i /root/inventory.cfg /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml'
+	
+install_openshift:
+	
 	# Execute the post install script on master
 	ssh -o StrictHostKeyChecking=no  -A root@$$(terraform output bastion_public_ip) "bash -s -- $$(terraform output master_private_ip) post_install_master.sh" < scripts/remote_exe.sh
 

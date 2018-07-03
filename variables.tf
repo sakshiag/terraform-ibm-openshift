@@ -31,6 +31,8 @@ variable "private_router" {
   description = "the router to use for the private VLAN."
 }
 
-variable "ibm_sl_username"{}
+variable "ibm_sl_username"{
+}
 
-variable "ibm_sl_api_key"{}
+variable "ibm_sl_api_key"{
+}
